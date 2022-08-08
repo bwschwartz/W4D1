@@ -7,7 +7,7 @@ class TicTacToeNode
 
   def initialize(board, next_mover_mark, prev_move_pos = nil)
     @board = board
-    @next_mover_mark = next_mover_mark  
+    @next_mover_mark = next_mover_mark
     @prev_move_pos = prev_move_pos
     @children = []
   end
@@ -20,20 +20,20 @@ class TicTacToeNode
   end
 
   def possible_board(pos)
+    @next_mover_mark == :o ? @next_mover_mark = :x : nil
     duped_board = @board.dup
-    duped_board[r,c] = next_mover_mark
+    duped_board[pos] = @next_mover_mark
     TicTacToeNode.new(duped_board, next_mover_mark, prev_move_pos = nil)
   end
 
   # This method generates an array of all moves that can be made after
   # the current move.
   def children
-    @board.dup.each.with_index do |row, r|
-      row.each.with_index do |el , c|
-        children << possible_board([r,c]) if !self.empty?([r,c])
-      end
-    end
+    indices = (0..2).to_a
+    positions = indices.product(indices)
+    positions.each { |position| @children << possible_board(position) }
   end
+
 end
 
 #children set up with empty array that are all next possible moves
