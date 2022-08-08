@@ -14,13 +14,23 @@ class TicTacToeNode
 
 
   def losing_node?(evaluator)
+    if @board.over?
+      if evaluator == @board.winner && !@board.turn
+        return false
+      else
+        return false
+      end
+    end
+    @children.each {|child| return false if !child.losing_node?(evaluator) }
+    false
+
   end
 
   def winning_node?(evaluator)
   end
 
-  def possible_board(pos) 
-    duped_board = @board.dup 
+  def possible_board(pos)
+    duped_board = @board.dup
     duped_board[pos] = @next_mover_mark
     @next_mover_mark == :o ? next_move = :x : next_move = :o
     TicTacToeNode.new(duped_board, next_move, prev_move_pos = pos)
